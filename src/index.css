@@ -1,0 +1,141 @@
+@import "@fontsource/bricolage-grotesque/400.css";
+@import "@fontsource/bricolage-grotesque/500.css";
+@import "@fontsource/bricolage-grotesque/700.css";
+@import "@fontsource/bricolage-grotesque/800.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "tailwindcss";
+
+/*
+  "Chouara" palette — taken from the dye vats of the Chouara tannery in Fès:
+  saffron, henna, zellige green, laid over a warm kohl black and raw bone paper.
+*/
+@theme {
+  --color-ink: #0e0c0a;
+  --color-ink-2: #171411;
+  --color-ink-3: #221e19;
+  --color-bone: #ede5d8;
+  --color-bone-dim: #a39a8c;
+  --color-saffron: #f4b22e;
+  --color-henna: #e2552d;
+  --color-zellige: #1ba88f;
+  --color-indigo: #3b3fb6;
+
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --background: var(--color-ink);
+  --foreground: var(--color-bone);
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-ink);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-saffron);
+  color: var(--color-ink);
+}
+
+/* Hide the native cursor only where the custom one is active */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+.font-serif-i {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Film grain */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.9s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(5%, -7%); }
+  60% { transform: translate(-3%, 8%); }
+  80% { transform: translate(7%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Zellige 8-point star pattern used as a texture */
+.zellige-pattern {
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23ede5d8' stroke-width='1'%3E%3Cpath d='M40 12 48 32 68 40 48 48 40 68 32 48 12 40 32 32Z'/%3E%3Crect x='26' y='26' width='28' height='28' transform='rotate(45 40 40)'/%3E%3Crect x='26' y='26' width='28' height='28'/%3E%3Cpath d='M0 0 12 12M80 0 68 12M0 80 12 68M80 80 68 68'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-speed, 40s) linear infinite;
+}
+.animate-marquee-reverse {
+  animation: marquee var(--marquee-speed, 40s) linear infinite reverse;
+}
+
+@keyframes rec {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+.animate-rec {
+  animation: rec 1.2s ease-in-out infinite;
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px var(--color-bone);
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain,
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-rec {
+    animation: none;
+  }
+}
